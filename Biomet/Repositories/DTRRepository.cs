@@ -15,9 +15,8 @@ namespace Biomet.Repositories
 
         public Employee Get(string employeeNumber, DateTime logDate)
         {
-            var _logdate = logDate.Date;
-            var employee = _context.Employees.Single(e => e.EmployeeNumber == employeeNumber);
-            var daylog = _context.DayLogs.SingleOrDefault(dl => dl.EmployeeId == employee.Id && dl.LogDate == _logdate);
+            var employee = Context.Employees.Single(e => e.EmployeeNumber == employeeNumber);
+            var daylog = Context.DayLogs.SingleOrDefault(dl => dl.EmployeeId == employee.Id && dl.LogDate == logDate);
 
             if (daylog != null)
             {
@@ -28,7 +27,7 @@ namespace Biomet.Repositories
                 employee.DayLogs.Add(new DayLog
                 {
                     EmployeeId = employee.Id,
-                    LogDate = _logdate,
+                    LogDate = logDate,
                 });
             }
             return employee;
@@ -40,15 +39,15 @@ namespace Biomet.Repositories
             {
                 if (item.Id <= 0)
                 {
-                    _context.Set<DayLog>().Add(item);
+                    Context.Set<DayLog>().Add(item);
                 }
                 else
                 {
-                    var dl = _context.Set<DayLog>().Attach(item);
-                    _context.Entry(dl).State = System.Data.Entity.EntityState.Modified;
+                    var dl = Context.Set<DayLog>().Attach(item);
+                    Context.Entry(dl).State = System.Data.Entity.EntityState.Modified;
                 }
 
-                _context.SaveChanges();
+                Context.SaveChanges();
             }
         }
     }

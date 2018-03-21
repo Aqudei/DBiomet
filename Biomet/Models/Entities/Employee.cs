@@ -11,7 +11,7 @@ namespace Biomet.Models.Entities
 {
     public abstract class Employee : EntityBase
     {
-        public enum EMPLOYEE_TYPE
+        public enum EmployeeTypeEnum
         {
             Salaried,
             HourlyRated
@@ -72,12 +72,12 @@ namespace Biomet.Models.Entities
 
         public static Employee Create(string empType)
         {
-            var employeeType = (EMPLOYEE_TYPE)Enum.Parse(typeof(EMPLOYEE_TYPE), empType);
-            if (employeeType == EMPLOYEE_TYPE.HourlyRated)
+            var employeeType = (EmployeeTypeEnum)Enum.Parse(typeof(EmployeeTypeEnum), empType);
+            if (employeeType == EmployeeTypeEnum.HourlyRated)
             {
                 return new HourlyRatedEmployee();
             }
-            if (employeeType == EMPLOYEE_TYPE.Salaried)
+            if (employeeType == EmployeeTypeEnum.Salaried)
             {
                 return new SalariedEmployee();
             }
@@ -85,7 +85,7 @@ namespace Biomet.Models.Entities
             throw new ArgumentOutOfRangeException("Unknown employee type");
         }
 
-        public void SetLog(int selectedLogType, DateTime? logdate = null)
+        public void SetLogType(int selectedLogType, DateTime? logdate = null)
         {
             if (!logdate.HasValue)
                 logdate = DateTime.Now;

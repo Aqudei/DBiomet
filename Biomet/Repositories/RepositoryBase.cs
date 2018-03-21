@@ -9,11 +9,11 @@ namespace Biomet.Repositories
 {
     public abstract class RepositoryBase
     {
-        protected readonly BiometContext _context;
+        protected readonly BiometContext Context;
 
-        public RepositoryBase(BiometContext context)
+        protected RepositoryBase(BiometContext context)
         {
-            this._context = context;
+            Context = context;
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Biomet.Models.Persistence
     {
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<DayLog> DayLogs { get; set; }
+        public virtual DbSet<PaycheckRequest> PaycheckRequests { get; set; }
 
         public BiometContext()
         {

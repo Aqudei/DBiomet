@@ -55,6 +55,9 @@
     <Reference Include="CsvHelper, Version=7.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.7.0.1\lib\net45\CsvHelper.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetProjects.WPF.Converters, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetProjects.WPF.Converters.1.0.4\lib\net45\DotNetProjects.WPF.Converters.dll</HintPath>
+    </Reference>
     <Reference Include="DPFPCtlXTypeLibNET, Version=1.6.1.0, Culture=neutral, PublicKeyToken=c0c98f712d5392a7, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\packages\DigitalPersonaSDK.net.1.0.0\lib\DPFPCtlXTypeLibNET.dll</HintPath>
@@ -189,6 +192,7 @@
     <Compile Include="Models\Entities\Employee.cs" />
     <Compile Include="Models\Entities\EntityBase.cs" />
     <Compile Include="Models\Entities\HourlyRatedEmployee.cs" />
+    <Compile Include="Models\Entities\PaycheckRequest.cs" />
     <Compile Include="Models\Entities\SalariedEmployee.cs" />
     <Compile Include="Models\Entities\TimeCard.cs" />
     <Compile Include="Models\Exceptions\NotPayDayException.cs" />

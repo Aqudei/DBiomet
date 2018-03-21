@@ -79,15 +79,15 @@ namespace Biomet.ViewModels
 
         public AddEditEmployeeViewModel(IEventAggregator eventAggregator)
         {
-            PaymentTypes = new Dictionary<string, Employee.EMPLOYEE_TYPE>
+            PaymentTypes = new Dictionary<string, Employee.EmployeeTypeEnum>
             {
                 {
-                    Enum.GetName(typeof(Employee.EMPLOYEE_TYPE), Employee.EMPLOYEE_TYPE.Salaried),
-                    Employee.EMPLOYEE_TYPE.Salaried
+                    Enum.GetName(typeof(Employee.EmployeeTypeEnum), Employee.EmployeeTypeEnum.Salaried),
+                    Employee.EmployeeTypeEnum.Salaried
                 },
                 {
-                    Enum.GetName(typeof(Employee.EMPLOYEE_TYPE), Employee.EMPLOYEE_TYPE.HourlyRated),
-                    Employee.EMPLOYEE_TYPE.HourlyRated
+                    Enum.GetName(typeof(Employee.EmployeeTypeEnum), Employee.EmployeeTypeEnum.HourlyRated),
+                    Employee.EmployeeTypeEnum.HourlyRated
                 },
             };
 
@@ -101,7 +101,7 @@ namespace Biomet.ViewModels
             _eventAggregator = eventAggregator;
 
             PropertyChanged += AddEditEmployeeViewModel_PropertyChanged;
-            PaymentType = Employee.EMPLOYEE_TYPE.HourlyRated;
+            PaymentTypeEnum = Employee.EmployeeTypeEnum.HourlyRated;
             PremiumFieldsEnabled = true;
         }
 
@@ -143,14 +143,14 @@ namespace Biomet.ViewModels
                 || e.PropertyName == nameof(EmployeeNumber))
                 NotifyOfPropertyChange(nameof(CanSave));
 
-            if (e.PropertyName == nameof(PaymentType))
+            if (e.PropertyName == nameof(PaymentTypeEnum))
             {
-                HourlyRateFieldEnabled = PaymentType == Employee.EMPLOYEE_TYPE.HourlyRated;
-                MonthlySalaryFieldEnabled = PaymentType == Employee.EMPLOYEE_TYPE.Salaried;
+                HourlyRateFieldEnabled = PaymentTypeEnum == Employee.EmployeeTypeEnum.HourlyRated;
+                MonthlySalaryFieldEnabled = PaymentTypeEnum == Employee.EmployeeTypeEnum.Salaried;
             }
         }
 
-        private Employee.EMPLOYEE_TYPE _paymentType;
+        private Employee.EmployeeTypeEnum _paymentTypeEnum;
         private string _sex;
         private int _id;
         private string _firstName;
@@ -160,10 +160,10 @@ namespace Biomet.ViewModels
         private string _birthplace;
         private readonly IEventAggregator _eventAggregator;
 
-        public Employee.EMPLOYEE_TYPE PaymentType
+        public Employee.EmployeeTypeEnum PaymentTypeEnum
         {
-            get => _paymentType;
-            set => Set(ref _paymentType, value);
+            get => _paymentTypeEnum;
+            set => Set(ref _paymentTypeEnum, value);
         }
 
         public Dictionary<string, string> Sexes { get; }
@@ -174,7 +174,7 @@ namespace Biomet.ViewModels
             TryClose();
         }
 
-        public Dictionary<string, Employee.EMPLOYEE_TYPE> PaymentTypes { get; }
+        public Dictionary<string, Employee.EmployeeTypeEnum> PaymentTypes { get; }
 
         public string Sex
         {
@@ -284,7 +284,7 @@ namespace Biomet.ViewModels
                 Photo = destination;
             }
 
-            var emp = Employee.Create(Enum.GetName(typeof(Employee.EMPLOYEE_TYPE), PaymentType));
+            var emp = Employee.Create(Enum.GetName(typeof(Employee.EmployeeTypeEnum), PaymentTypeEnum));
             Mapper.Map(this, emp);
 
             if (Id <= 0)

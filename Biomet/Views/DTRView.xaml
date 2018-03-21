@@ -5,15 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Biomet.Views"
              xmlns:dlg="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-             dlg:DialogParticipation.Register="{Binding}"
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="Biomet.Views.DTRView"
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" xmlns:shared="urn:mlog-sharedclasses-ns"
+             dlg:DialogParticipation.Register="{Binding}"
+             x:Class="Biomet.Views.DTRView"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="663.515" d:DesignWidth="1094.89">
+    <UserControl.Resources>
+        <shared:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" FalseValue="Collapsed"/>
+        <shared:BoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" TrueValue="Collapsed"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-       
+
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -23,7 +28,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
-             
+
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
@@ -44,10 +49,10 @@
                     </DataGrid.Effect>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="EMP #" Binding="{Binding Employee.EmployeeNumber}"/>
-                        <DataGridTextColumn Header="AM IN" Binding="{Binding AMIN,StringFormat={}{0:t}}"/>
-                        <DataGridTextColumn Header="AM OUT" Binding="{Binding AMOUT,StringFormat={}{0:t}}"/>
-                        <DataGridTextColumn Header="PM IN" Binding="{Binding PMIN,StringFormat={}{0:t}}"/>
-                        <DataGridTextColumn Header="PM OUT" Binding="{Binding PMOUT,StringFormat={}{0:t}}"/>
+                        <DataGridTextColumn Header="AM IN" Binding="{Binding AMIN, StringFormat=\{0:t\}}"/>
+                        <DataGridTextColumn Header="AM OUT" Binding="{Binding AMOUT, StringFormat=\{0:t\}}"/>
+                        <DataGridTextColumn Header="PM IN" Binding="{Binding PMIN, StringFormat=\{0:t\}}"/>
+                        <DataGridTextColumn Header="PM OUT" Binding="{Binding PMOUT, StringFormat=\{0:t\}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
@@ -58,7 +63,13 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <StackPanel HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Visibility="{Binding IsRequestingPaycheck, Converter={StaticResource InverseBoolToVisibilityConverter}}" x:Name="RequestPaycheck" Content="Request Paycheck" Margin="4" VerticalAlignment="Center"/>
+                    <DatePicker Visibility="{Binding IsRequestingPaycheck, Converter={StaticResource BoolToVisibilityConverter}}" x:Name="RequestedPaycheckDate" Margin="4" VerticalAlignment="Center"/>
+                    <TextBlock  Visibility="{Binding IsRequestingPaycheck, Converter={StaticResource BoolToVisibilityConverter}}" FontSize="16" FontWeight="Bold" Margin="4" VerticalAlignment="Center"><Run Text="Please scan a finger to confirm request."/></TextBlock>
+                    <Button Visibility="{Binding IsRequestingPaycheck, Converter={StaticResource BoolToVisibilityConverter}}" x:Name="CancelRequestPaycheck" Content="Cancel" Margin="4" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" HorizontalAlignment="Stretch">
                     <Image 
                         x:Name="Employee_Photo" 
                         Margin="16"

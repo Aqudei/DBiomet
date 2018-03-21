@@ -17,7 +17,7 @@ namespace Biomet.Reporting
 
         public IEnumerable<Employee> GetEmployeeList()
         {
-            return _context.Employees.ToList().Select(e => new Employee
+            return Context.Employees.ToList().Select(e => new Employee
             {
                 EmployeeNumber = e.EmployeeNumber,
                 FullName = e.FullName,
@@ -32,7 +32,7 @@ namespace Biomet.Reporting
 
         public IEnumerable<DTR> GetDTR()
         {
-            return _context.DayLogs.Include("Employee").ToList().Select(d => new DTR
+            return Context.DayLogs.Include("Employee").ToList().Select(d => new DTR
             {
                 EmployeeNumber = d.Employee.EmployeeNumber,
                 FullName = d.Employee.FullName,

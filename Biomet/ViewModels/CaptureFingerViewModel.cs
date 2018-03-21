@@ -137,7 +137,6 @@ namespace Biomet.ViewModels
         public void OnComplete(object Capture, string ReaderSerialNumber, Sample Sample)
         {
             MakeReport("The fingerprint sample was captured.");
-            SetPrompt("Scan the same fingerprint again.");
             Process(Sample);
         }
 

@@ -19,16 +19,17 @@ namespace Biomet.ViewModels
 {
     public class DTRViewModel : CaptureFingerViewModel
     {
-        private Verification Verificator;
+        private Verification _verificator;
 
         public BindableCollection<DayLog> DayLogs { get; set; }
 
-        public DTRViewModel(DTRRepository dtrRepository, IDialogCoordinator dialogCoordinator)
+        public DTRViewModel(DTRRepository dtrRepository, IDialogCoordinator dialogCoordinator, IWindowManager windowManager)
         {
             SetupClock();
             DayLogs = new BindableCollection<DayLog>();
             _dtrRepository = dtrRepository;
             _dialogCoordinator = dialogCoordinator;
+            _windowManager = windowManager;
             PropertyChanged += DTRViewModel_PropertyChanged;
             RefreshLogs();
         }
@@ -75,15 +76,15 @@ namespace Biomet.ViewModels
 
         public string LogTime
         {
-            get { return _logTime; }
-            set { Set(ref _logTime, value); }
+            get => _logTime;
+            set => Set(ref _logTime, value);
         }
 
 
         protected override void Init()
         {
             base.Init();
-            Verificator = new DPFP.Verification.Verification();
+            _verificator = new Verification();
 
             LoadTemplates();
         }
@@ -96,6 +97,7 @@ namespace Biomet.ViewModels
         private int _selectedLogType = 1;
         private readonly DTRRepository _dtrRepository;
         private readonly IDialogCoordinator _dialogCoordinator;
+        private readonly IWindowManager _windowManager;
 
         public string DateNow { get => _dateTimeNow; private set => Set(ref _dateTimeNow, value); }
         public string TimeNow { get => _timeNow; private set => Set(ref _timeNow, value); }
@@ -152,29 +154,35 @@ namespace Biomet.ViewModels
             var features = ExtractFeatures(Sample, DPFP.Processing.DataPurpose.Verification);
             if (features == null) return;
 
-            var result = new DPFP.Verification.Verification.Result();
+            var result = new Verification.Result();
             foreach (var storedTemplate in _templates)
             {
-                Verificator.Verify(features, storedTemplate.Value, ref result);
+                _verificator.Verify(features, storedTemplate.Value, ref result);
                 UpdateStatus(result.FARAchieved);
 
-                if (result.Verified)
-                {
-                    FingerIdentified(storedTemplate.Key);
-                    return;
-                }
+                if (!result.Verified) continue;
+                OnFingerIdentified(storedTemplate.Key);
+                return;
             }
         }
 
-        private void FingerIdentified(string employeeNumber)
+        private void OnFingerIdentified(string employeeNumber)
         {
             try
             {
-                Employee = _dtrRepository.Get(employeeNumber.Trim(), DateTime.Now.Date);
-                Employee.SetLog(SelectedLogType);
-                LogTime = DateTime.Now.ToLongTimeString();
-                _dtrRepository.Save(Employee);
-                RefreshLogs();
+                if (IsRequestingPaycheck)
+                {
+                    ProcessPaycheckRequest(employeeNumber);
+                    IsRequestingPaycheck = false;
+                }
+                else
+                {
+                    Employee = _dtrRepository.Get(employeeNumber.Trim(), DateTime.Now.Date);
+                    Employee.SetLogType(SelectedLogType);
+                    LogTime = DateTime.Now.ToLongTimeString();
+                    _dtrRepository.Save(Employee);
+                    RefreshLogs();
+                }
             }
             catch (Exception ex)
             {
@@ -182,9 +190,73 @@ namespace Biomet.ViewModels
             }
         }
 
-        private void UpdateStatus(int fARAchieved)
+
+
+        private void UpdateStatus(int achievedFAR)
         {
-            Debug.WriteLine("Far Achieved: " + fARAchieved);
+            Debug.WriteLine("Far Achieved: " + achievedFAR);
         }
+
+        #region PAYCHECK REQUEST
+
+
+        private bool _isRequestingPaycheck;
+
+        private DateTime? _requestedPaycheckDate;
+
+        public DateTime? RequestedPaycheckDate
+        {
+            get => _requestedPaycheckDate;
+            set => Set(ref _requestedPaycheckDate, value);
+        }
+
+        public bool IsRequestingPaycheck
+        {
+            get => _isRequestingPaycheck;
+            set => Set(ref _isRequestingPaycheck, value);
+        }
+
+        public bool CanRequestPaycheck => IsRequestingPaycheck == false;
+
+        public void RequestPaycheck()
+        {
+            IsRequestingPaycheck = true;
+        }
+
+        public void CancelRequestPaycheck()
+        {
+            IsRequestingPaycheck = false;
+        }
+
+        private void ProcessPaycheckRequest(string employeeNumber)
+        {
+            if (RequestedPaycheckDate == null)
+            {
+                _dialogCoordinator.ShowMessageAsync(this, "Error", "Please select a date.");
+                return;
+            }
+
+            using (var db = new BiometContext())
+            {
+                var emp = db.Employees.SingleOrDefault(e => e.EmployeeNumber == employeeNumber);
+                if (emp == null)
+                    return;
+
+                if (!emp.IsPayDay(RequestedPaycheckDate.Value))
+                {
+                    _dialogCoordinator.ShowMessageAsync(this, "Error", "Its not your pay day.");
+                    return;
+                }
+
+                db.PaycheckRequests.Add(new PaycheckRequest
+                {
+                    EmployeeId = emp.Id,
+                    PayDay = RequestedPaycheckDate.Value
+                });
+                db.SaveChanges();
+            }
+        }
+
+        #endregion
     }
 }
