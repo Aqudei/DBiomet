@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Biomet.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="FPTEMPLATE_DIR" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Templates</Value>
+    </Setting>
+    <Setting Name="PHOTOS_DIR" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Photos</Value>
+    </Setting>
+    <Setting Name="RECEIPT_FILE" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PAYROLL.docx</Value>
+    </Setting>
+    <Setting Name="RECEIPT_DIR" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Receipts</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

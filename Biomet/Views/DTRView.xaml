@@ -1,0 +1,117 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Biomet.Views"
+             xmlns:dlg="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             dlg:DialogParticipation.Register="{Binding}"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="Biomet.Views.DTRView"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+       
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="TIME SHEET" Background="#FFE08E4A" FontWeight="Bold" FontSize="24"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+             
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Stretch="UniformToFill" 
+                Source="/Biomet;component/Images/shutterstock_biometric-1168x657.jpg" 
+                   Grid.ColumnSpan="3" Opacity="0.3"/>
+
+            <Button x:Name="OpenManager" 
+                    Content="&gt;&gt;" 
+                    Grid.Column="2" 
+                    VerticalAlignment="Center"
+                    cal:Message.Attach="OpenManager()"/>
+
+            <GroupBox Header="DTR FOR TODAY" Margin="4" >
+                <DataGrid x:Name="DayLogs" AutoGenerateColumns="False" IsReadOnly="True" FontSize="15">
+                    <DataGrid.Effect>
+                        <DropShadowEffect/>
+                    </DataGrid.Effect>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="EMP #" Binding="{Binding Employee.EmployeeNumber}"/>
+                        <DataGridTextColumn Header="AM IN" Binding="{Binding AMIN,StringFormat={}{0:t}}"/>
+                        <DataGridTextColumn Header="AM OUT" Binding="{Binding AMOUT,StringFormat={}{0:t}}"/>
+                        <DataGridTextColumn Header="PM IN" Binding="{Binding PMIN,StringFormat={}{0:t}}"/>
+                        <DataGridTextColumn Header="PM OUT" Binding="{Binding PMOUT,StringFormat={}{0:t}}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <StackPanel HorizontalAlignment="Stretch">
+                    <Image 
+                        x:Name="Employee_Photo" 
+                        Margin="16"
+                        Width="180" Height="160"/>
+                    <TextBlock 
+                        TextAlignment="Center"
+                        x:Name="Employee_FullName" 
+                        FontSize="72" 
+                        FontFamily="Times New Roman"
+                        FontWeight="Bold" 
+                        FontStretch="Expanded"/>
+
+                    <TextBlock 
+                        TextAlignment="Center"
+                        x:Name="LogTime" 
+                        FontSize="42" 
+                        FontFamily="Times New Roman"
+                        FontWeight="Bold" 
+                        FontStretch="Expanded"/>
+
+                    <Slider 
+                        x:Name="SelectedLogType" 
+                        Maximum="4" 
+                        Minimum="1" 
+                        SmallChange="1"
+                        Margin="128,16" 
+                        TickPlacement="Both" 
+                        IsSnapToTickEnabled="True"/>
+
+                    <TextBlock 
+                        TextAlignment="Center"
+                        x:Name="LogTypeText" 
+                        FontSize="56" 
+                        FontFamily="Times New Roman"
+                        FontWeight="Bold" 
+                        FontStretch="Expanded" Margin="0,0,0,32"/>
+
+                    <TextBlock 
+                        TextAlignment="Center"
+                        x:Name="DateNow" 
+                        FontSize="56" 
+                        FontFamily="Times New Roman"
+                        FontWeight="Bold" 
+                        FontStretch="Expanded"/>
+
+                    <TextBlock 
+                        TextAlignment="Center"
+                        x:Name="TimeNow" 
+                        FontSize="56" 
+                        FontFamily="Times New Roman"
+                        FontStretch="Expanded"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

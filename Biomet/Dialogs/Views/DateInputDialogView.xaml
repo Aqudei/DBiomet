@@ -1,0 +1,21 @@
+﻿<controls:MetroWindow
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls" x:Class="Biomet.Dialogs.Views.DateInputDialogView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Biomet.Dialogs.Views"
+        mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner"
+        Title="Please select a date" IsCloseButtonEnabled="False" ShowCloseButton="False" IsMaxRestoreButtonEnabled="False" ShowMaxRestoreButton="False" IsMinButtonEnabled="False" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <DatePicker x:Name="PayDate" Width="220"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button x:Name="Accept" Content="Accept"/>
+            <Button x:Name="Cancel" Content="Cancel"/>
+        </StackPanel>
+    </Grid>
+</controls:MetroWindow>
