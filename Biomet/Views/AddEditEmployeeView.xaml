@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:Biomet.Views"
     mc:Ignorable="d"
-    Title="Add / Edit Employee" Height="600" Width="620" IsCloseButtonEnabled="False" ShowCloseButton="False"
+    Title="Add / Edit Employee" Height="525" Width="620" IsCloseButtonEnabled="False" ShowCloseButton="False"
     ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <controls:MetroWindow.Resources>
 
@@ -29,9 +29,14 @@
             <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
                 <Setter Property="Margin" Value="2" />
             </Style>
+            <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+                <Setter Property="Margin" Value="2"/>
+            </Style>
             <BitmapImage x:Key="WhoImage" UriSource="/Biomet;component/Images/Who_is_it.png" />
         </Grid.Resources>
+        
         <Grid.ColumnDefinitions>
+
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
@@ -45,7 +50,7 @@
                 <Image
                     Width="180"
                     HorizontalAlignment="Right"
-                    Height="180"
+                    Height="120"
                     Margin="0,0,8,0"
                     Source="{Binding PhotoSource, TargetNullValue={StaticResource WhoImage}}" />
             </StackPanel>
@@ -176,10 +181,11 @@
             <StackPanel Orientation="Horizontal" Margin="32,0,0,0">
                 <Button Content="Save"
                         x:Name="Save"
-                        HorizontalAlignment="Right" TabIndex="13" />
-                <Button Content="Done"
+                        
+                        HorizontalAlignment="Right" TabIndex="13" Background="#FF10E219" Width="100" Height="30" />
+                <Button Content="Cancel"
                         x:Name="Done"
-                        HorizontalAlignment="Right" TabIndex="14" />
+                        HorizontalAlignment="Right" TabIndex="14" Background="#FFF72525" Width="100" Height="30" />
             </StackPanel>
         </StackPanel>
     </Grid>
